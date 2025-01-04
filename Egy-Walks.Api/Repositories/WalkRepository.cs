@@ -16,7 +16,7 @@ public class WalkRepository : IWalkRepository
         _logger = logger;
     }
 
-    public async Task<List<Walk>> GetAllWalksAsync(string? filterOn = null, string? filterQuery = null)
+    public async Task<List<Walk>> GetAllWalksAsync(string? filterOn = null, string? filterQuery = null,string? sortBy = null, bool? sortOrder = null)
     {
         _logger.LogInformation("Getting all walks");
         var walks = _db.Walks
@@ -37,7 +37,23 @@ public class WalkRepository : IWalkRepository
                 walks = walks.Where(tmp => tmp.Description.Contains(filterQuery));
             }
         }
-
+        
+        //sorting
+        if (!string.IsNullOrEmpty(sortBy))
+        {
+            if (sortBy.Equals("Name", StringComparison.CurrentCultureIgnoreCase))
+            {
+                walks = sortOrder.GetValueOrDefault(true)
+                    ? walks.OrderBy(tmp => tmp.Name)
+                    : walks.OrderByDescending(tmp => tmp.Name);
+            }
+            else if (sortBy.Equals("Length", StringComparison.CurrentCultureIgnoreCase))
+            {
+                walks = sortOrder.GetValueOrDefault(true)
+                    ? walks.OrderBy(tmp => tmp.LengthInKm)
+                    : walks.OrderByDescending(tmp => tmp.LengthInKm);
+            }
+        }
         // return await _db.Walks
         //     .Include(tmp => tmp.Difficulty)
         //     .Include(tmp => tmp.Region)
