@@ -25,10 +25,10 @@ namespace Egy_Walks.Api.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAllWalks([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
-            [FromQuery] string? sortBy, [FromQuery] bool? sortOrder)
+            [FromQuery] string? sortBy, [FromQuery] bool? sortOrder,[FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
         {
             _logger.LogInformation("Fetching all walks");
-            var walks = await _walkRepository.GetAllWalksAsync(filterOn, filterQuery, sortBy, sortOrder);
+            var walks = await _walkRepository.GetAllWalksAsync(filterOn, filterQuery, sortBy, sortOrder,pageNumber, pageSize);
             var walksResponse = _mapper.Map<List<WalkResponse>>(walks);
             return Ok(walksResponse);
         }

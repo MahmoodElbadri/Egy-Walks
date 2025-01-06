@@ -16,7 +16,8 @@ public class WalkRepository : IWalkRepository
         _logger = logger;
     }
 
-    public async Task<List<Walk>> GetAllWalksAsync(string? filterOn = null, string? filterQuery = null,string? sortBy = null, bool? sortOrder = null)
+    public async Task<List<Walk>> GetAllWalksAsync(string? filterOn = null, string? filterQuery = null
+        ,string? sortBy = null, bool? sortOrder = null,int pageNumber = 1,int pageSize = 2)
     {
         _logger.LogInformation("Getting all walks");
         var walks = _db.Walks
@@ -58,7 +59,9 @@ public class WalkRepository : IWalkRepository
         //     .Include(tmp => tmp.Difficulty)
         //     .Include(tmp => tmp.Region)
         //     .ToListAsync();
-        return await walks.ToListAsync();
+        int skipResult = (pageNumber - 1) * pageSize;
+        
+        return await walks.Skip(skipResult).Take(pageSize).ToListAsync();
     }
 
     public async Task<Walk> CreateWalkAsync(Walk walk)
