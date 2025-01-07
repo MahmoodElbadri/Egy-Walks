@@ -46,8 +46,8 @@ public class AuthController:ControllerBase
             }
 
             // Return the created user with a 201 status code
-            //return CreatedAtAction(nameof(GetUser), new { username = identityUser.UserName }, model);
-            return Ok("User created");
+            return CreatedAtAction(nameof(GetUser), new { username = identityUser.UserName }, model);
+            //return Ok("User created");
         }
 
         // If user creation failed, return the errors
@@ -63,7 +63,29 @@ public class AuthController:ControllerBase
         {
             return NotFound();
         }
+
+        LoginAddRequest response = new LoginAddRequest()
+        {
+            UserName = user.UserName,
+        };
         // Here you should map user to a DTO or return relevant information
-        return Ok();
+        return Ok(response);
     }
+
+    [HttpPost("Login")]
+    [ValidateModel]
+    public async Task<IActionResult> Login([FromBody] LoginAddRequest model)
+    {
+        var user = await _userManager.FindByEmailAsync(model.UserName);
+        if (user != null)
+        {
+            bool checkPasswordAsync = await _userManager.CheckPasswordAsync(user, model.Password);
+            if (checkPasswordAsync)
+            {
+                return Ok("Signed in Successfully");
+            }
+        }
+        return BadRequest("Invalid username or password");
+    }
+    
 }

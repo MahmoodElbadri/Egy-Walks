@@ -4,3 +4,6 @@ GET {{Egy_Walks.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+POST {{Egy_Walks.Api_HostAddress}}/api/Auth/register
+Accept: application/json
+
