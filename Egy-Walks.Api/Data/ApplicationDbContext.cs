@@ -9,7 +9,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Difficulty> Difficulties { get; set; }
     public DbSet<Walk> Walks { get; set; }
 
-    public ApplicationDbContext(DbContextOptions options) : base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
 

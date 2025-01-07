@@ -3,6 +3,7 @@ using Egy_Walks.Api.CustomActionFilter;
 using Egy_Walks.Api.IRepositories;
 using Egy_Walks.Api.Models.Domain;
 using Egy_Walks.Api.Models.DTOs.WalkDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace Egy_Walks.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class WalkController : ControllerBase
     {
         private readonly IWalkRepository _walkRepository;
